@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">Postmen</string>
 
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Neue Adresse erstellen</string>
     <string name="action_settings">Settings</string>
+    <string name="title_activity_add_adress">AddAdressActivity</string>
+    <string name="street">Straße</string>
+    <string name="number">Nummer</string>
+    <string name="create">Erstellen</string>
+    <string name="new_adress">Neue Adresse</string>
 </resources>

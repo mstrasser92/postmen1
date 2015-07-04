@@ -1,18 +1,33 @@
-package at.post.postmen;
+package at.post.postmen.app;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+
+import at.post.postmen.R;
+import at.post.postmen.data.AdressDataSource;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements View.OnClickListener{
+
+    private Button newAdressBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        adressSource = new AdressDataSource(this);
+
+        newAdressBtn = (Button)findViewById(R.id.NewAdressBtn);
+        newAdressBtn.setOnClickListener(this);
+
     }
+
+    private AdressDataSource adressSource;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -34,5 +49,17 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onClick(View v) {
+        int clicked = v.getId();
+
+        if(clicked == R.id.NewAdressBtn)
+        {
+            Intent intent = new Intent(this, AddAdressActivity.class);
+            startActivity(intent);
+
+        }
     }
 }

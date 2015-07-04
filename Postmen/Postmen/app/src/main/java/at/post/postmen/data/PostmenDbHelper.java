@@ -1,4 +1,4 @@
-package at.post.postmen;
+package at.post.postmen.data;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,13 +15,13 @@ public class PostmenDbHelper extends SQLiteOpenHelper{
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_STREET = "street";
     public static final String COLUMN_NUMBER = "number";
-    public static final String COLUMN_PARCELS = "parcels";
+    public static final String  COLUMN_PARCELS = "parcels";
 
     public static final String SQL_CREATE =
             "create table" + TABLE_ADRESSES + "(" +
                     COLUMN_ID + " integer primary key autoincrement," +
                     COLUMN_STREET + " text not null," +
-                    COLUMN_NUMBER + " integer not null," +
+                    COLUMN_NUMBER + " text not null," +
                     COLUMN_PARCELS + " integer;";
 
     public PostmenDbHelper(Context context) {
