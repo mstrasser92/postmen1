@@ -24,6 +24,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="at.post.postmen.app.MainActivity" />
         </activity>
+        <activity
+            android:name=".app.ShowAdressesActivity"
+            android:label="@string/title_activity_show_adresses"
+            android:parentActivityName=".app.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="at.post.postmen.app.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -1,17 +1,21 @@
 package at.post.postmen.app;
 
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.sql.SQLException;
 
 import at.post.postmen.R;
+import at.post.postmen.data.Adress;
 import at.post.postmen.data.AdressDataSource;
 
 public class AddAdressActivity extends ActionBarActivity implements View.OnClickListener {
@@ -19,6 +23,8 @@ public class AddAdressActivity extends ActionBarActivity implements View.OnClick
     private Button createButton;
     private EditText streetEt;
     private EditText numberEt;
+
+    private AdressDataSource adressSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +35,8 @@ public class AddAdressActivity extends ActionBarActivity implements View.OnClick
         numberEt = (EditText)findViewById(R.id.numberEt);
         createButton = (Button)findViewById(R.id.bCreate);
         createButton.setOnClickListener(this);
+
+        adressSource = new AdressDataSource(this);
     }
 
 
@@ -64,11 +72,20 @@ public class AddAdressActivity extends ActionBarActivity implements View.OnClick
     }
 
     private void createAdress() {
-        AdressDataSource adressSource = new AdressDataSource(this);
+
+
+        Log.d("CreateAdress()", "Got to create Adress before database connection");
+
         try {
             adressSource.open();
-            adressSource.createAdress(streetEt.getText().toString(), numberEt.getText().toString(),0);
+            Log.d("CreateAdress()", "Opened Connection");
+            Adress newAdress = adressSource.createAdress(streetEt.getText().toString(), numberEt.getText().toString(), 0);
+            Log.d("CreateAdress()", "Wrote new Adress");
             adressSource.close();
+
+            Toast.makeText(this, getString(R.string.Created) + " " + newAdress.getStreet() + " " + newAdress.getNumber(), Toast.LENGTH_LONG).show();
+            streetEt.setText("");
+            numberEt.setText("");
         } catch (SQLException e) {
             e.printStackTrace();
         }

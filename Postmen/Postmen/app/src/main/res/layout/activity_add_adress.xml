@@ -18,17 +18,18 @@
         android:layout_height="wrap_content"
         android:id="@+id/streetEt"
         android:editable="true"
-        android:layout_above="@+id/bCreate"
+        android:enabled="true"
+        android:layout_below="@+id/textView2"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:enabled="true" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/street"
         android:id="@+id/textView2"
-        android:layout_above="@+id/numberEt"
+        android:layout_marginTop="40dp"
+        android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -37,18 +38,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/numberEt"
         android:editable="true"
-        android:layout_above="@+id/streetEt"
+        android:enabled="true"
+        android:layout_above="@+id/bCreate"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="38dp"
-        android:enabled="true" />
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/number"
         android:id="@+id/textView3"
-        android:layout_above="@+id/streetEt"
+        android:layout_above="@+id/numberEt"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

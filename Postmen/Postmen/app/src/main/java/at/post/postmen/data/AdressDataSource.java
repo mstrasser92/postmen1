@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
+import android.util.Log;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -45,7 +47,7 @@ public class AdressDataSource {
         return cursorToAdress(cursor);
     }
 
-    protected List<Adress> getAllAdresses() {
+    public List<Adress> getAllAdresses() {
         List<Adress> AdressList = new ArrayList<Adress>();
 
         Cursor cursor = db.query("Adresses", allColumns, null, null, null, null,null);
@@ -71,5 +73,45 @@ public class AdressDataSource {
         adress.setNumber(cursor.getString(2));
         adress.setParcels(cursor.getInt(3));
         return adress;
+    }
+
+    public void resetParcels() {
+        try {
+            this.open();
+            ContentValues values = new ContentValues();
+            values.put(dbHelper.COLUMN_PARCELS, 0);
+            db.update(dbHelper.TABLE_ADRESSES, values, null, null);
+            this.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void resetDb() {
+        try {
+            this.open();
+            db.execSQL("DROP TABLE IF EXISTS ADRESSES");
+            db.execSQL(dbHelper.SQL_CREATE);
+            this.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void updateParcelNumber(Adress adress) {
+        try {
+            this.open();
+            ContentValues values = new ContentValues();
+            values.put(dbHelper.COLUMN_PARCELS, adress.getParcels() + 1);
+            String selection = dbHelper.COLUMN_ID + " LIKE ?";
+            String[] selectionArgs = { Long.toString(adress.getId()) };
+
+            db.update(dbHelper.TABLE_ADRESSES, values, selection, selectionArgs );
+            this.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

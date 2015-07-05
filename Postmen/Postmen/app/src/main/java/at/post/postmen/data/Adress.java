@@ -41,9 +41,10 @@ public class Adress {
         this.parcels = parcels;
     }
 
-    //@Override
-   //public toString() {
-    //    return String.format("Adresse: %s %s Anzahl Pakete %d", street, number, parcels);
-    //}
+    @Override
+    public String toString() {
+        String adresse = street + " " + number + "\n" + " Pakete: " + Integer.toString(parcels);
+        return adresse;
+    }
 
 }

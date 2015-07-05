@@ -18,4 +18,31 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="49dp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/show_adresses"
+        android:id="@+id/ShowAdressesBtn"
+        android:layout_below="@+id/NewAdressBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="45dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reset_parcels"
+        android:id="@+id/resetParcelsBtn"
+        android:layout_below="@+id/ShowAdressesBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="47dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/reset_db"
+        android:id="@+id/resetDbBtn"
+        android:layout_below="@+id/resetParcelsBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="51dp" />
+
 </RelativeLayout>
