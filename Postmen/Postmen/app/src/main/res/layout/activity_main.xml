@@ -14,35 +14,56 @@
         android:layout_height="wrap_content"
         android:text="@string/new_adress"
         android:id="@+id/NewAdressBtn"
+        android:layout_marginTop="27dp"
         android:layout_below="@+id/textView4"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="49dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/show_adresses"
         android:id="@+id/ShowAdressesBtn"
-        android:layout_below="@+id/NewAdressBtn"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="45dp" />
+        android:layout_alignTop="@+id/NewAdressBtn"
+        android:layout_toRightOf="@+id/textView4"
+        android:layout_toEndOf="@+id/textView4" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reset_parcels"
         android:id="@+id/resetParcelsBtn"
-        android:layout_below="@+id/ShowAdressesBtn"
+        android:layout_below="@+id/addParcelsBtn"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="47dp" />
+        android:layout_marginTop="25dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reset_db"
         android:id="@+id/resetDbBtn"
+        android:layout_marginTop="25dp"
         android:layout_below="@+id/resetParcelsBtn"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addParcelsBtn"
+        android:layout_marginTop="25dp"
+        android:text="@string/addParcels"
+        android:layout_below="@+id/NewAdressBtn"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:text="@string/go_on_tour"
+        android:id="@+id/goOnTourBtn"
+        android:background="@color/highlighted_text_material_light"
+        android:layout_below="@+id/resetDbBtn"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="51dp" />
+        android:layout_marginTop="33dp" />
+
 
 </RelativeLayout>

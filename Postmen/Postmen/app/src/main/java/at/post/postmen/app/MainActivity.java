@@ -1,8 +1,10 @@
 package at.post.postmen.app;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +23,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private Button showAdressesBtn;
     private Button resetParcelsBtn;
     private Button resetDbBtn;
+    private Button addParcelsBtn;
+    private Button goOnTourBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,12 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         resetDbBtn = (Button)findViewById(R.id.resetDbBtn);
         resetDbBtn.setOnClickListener(this);
+
+        addParcelsBtn = (Button)findViewById(R.id.addParcelsBtn);
+        addParcelsBtn.setOnClickListener(this);
+
+        goOnTourBtn = (Button)findViewById(R.id.goOnTourBtn);
+        goOnTourBtn.setOnClickListener(this);
     }
 
 
@@ -81,12 +91,55 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 startActivity(intent2);
                 break;
             case R.id.resetParcelsBtn:
-                adressSource.resetParcels();
-                Toast.makeText(this, getString(R.string.reset_parcels_done), Toast.LENGTH_LONG).show();
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                adressSource.resetParcels();
+                                Toast.makeText(MainActivity.this, getString(R.string.reset_parcels_done), Toast.LENGTH_LONG).show();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                        }
+                    }
+
+                };
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show();
                 break;
             case R.id.resetDbBtn:
-                adressSource.resetDb();
-                Toast.makeText(this, getString(R.string.reset_db_done), Toast.LENGTH_LONG).show();
+                DialogInterface.OnClickListener dialogClickListener2 = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                adressSource.resetDb();
+                                Toast.makeText(MainActivity.this, getString(R.string.reset_db_done), Toast.LENGTH_LONG).show();
+                                break;
+
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                //No button clicked
+                                break;
+                        }
+                    }
+
+                };
+                AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
+                builder2.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener2)
+                        .setNegativeButton("No", dialogClickListener2).show();
+
+                break;
+            case R.id.addParcelsBtn:
+                Intent intent3 = new Intent(this, AddParcelsActivity.class);
+                startActivity(intent3);
+                break;
+            case R.id.goOnTourBtn:
+                Intent intent4 = new Intent(this, TourActivity.class);
+                startActivity(intent4);
                 break;
         }
     }

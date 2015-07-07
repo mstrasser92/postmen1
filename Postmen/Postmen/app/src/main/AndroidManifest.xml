@@ -32,6 +32,22 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="at.post.postmen.app.MainActivity" />
         </activity>
+        <activity
+            android:name=".app.AddParcelsActivity"
+            android:label="@string/title_activity_add_parcels"
+            android:parentActivityName=".app.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="at.post.postmen.app.MainActivity" />
+        </activity>
+        <activity
+            android:name=".app.TourActivity"
+            android:label="@string/title_activity_tour"
+            android:parentActivityName=".app.MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="at.post.postmen.app.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

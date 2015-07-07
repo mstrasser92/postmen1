@@ -9,10 +9,14 @@
     <string name="create">Erstellen</string>
     <string name="new_adress">Neue Adresse</string>
     <string name="title_activity_show_adresses">Adressen</string>
-    <string name="show_adresses">Zeige Adressen</string>
+    <string name="show_adresses">Zeige alle Adressen</string>
     <string name="Created">Erstellte </string>
     <string name="reset_parcels">Pakete zurücksetzen</string>
     <string name="reset_parcels_done">Pakete zurückgesetzt</string>
     <string name="reset_db">Datenbank zurücksetzen</string>
     <string name="reset_db_done">Datenbank zurückgesetzt</string>
+    <string name="addParcels">Pakete hinzufügen</string>
+    <string name="title_activity_add_parcels">Pakete hinzufügen</string>
+    <string name="go_on_tour">Starte Tour</string>
+    <string name="title_activity_tour">OnTour</string>
 </resources>
