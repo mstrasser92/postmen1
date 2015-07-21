@@ -28,7 +28,8 @@ public class PostmenDbHelper extends SQLiteOpenHelper{
                     COLUMN_ID + " integer primary key autoincrement, " +
                     COLUMN_STREET + " text not null, " +
                     COLUMN_NUMBER + " text not null, " +
-                    COLUMN_PARCELS + " integer);";
+                    COLUMN_PARCELS + " integer, " +
+                    "UNIQUE(" + COLUMN_STREET + ", " + COLUMN_NUMBER + " ON CONFLICT REPLACE);";
 
 
     // TABLE SIGNATURE RELEASE AUTHORISATIONS

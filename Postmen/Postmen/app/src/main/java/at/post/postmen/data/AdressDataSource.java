@@ -17,7 +17,7 @@ public class AdressDataSource {
 
     private SQLiteDatabase db;
     private PostmenDbHelper dbHelper;
-    private String[] allColumns = {"id", "street", "number", "parcels"};
+    private String[] allColumns = {dbHelper.COLUMN_ID, dbHelper.COLUMN_STREET, dbHelper.COLUMN_NUMBER, dbHelper.COLUMN_PARCELS};
 
     public AdressDataSource(Context context) {
         dbHelper = new PostmenDbHelper(context);
@@ -46,8 +46,10 @@ public class AdressDataSource {
     }
 
     public Adress createAdress(String street, String number) {
-        Cursor cursor = db.query("Adresses", allColumns, PostmenDbHelper.COLUMN_STREET + " = " + street + " AND " + PostmenDbHelper.COLUMN_NUMBER + " = " + number, null, null, null, null);
-        if(cursor.getCount() == 0)
+        Cursor cursor = db.rawQuery("SELECT id, street, number, parcels FROM Adresses WHERE street = ? AND number = ?", new String[]{street, number});
+                //db.query("Adresses", allColumns, PostmenDbHelper.COLUMN_STREET + " = " + street + " AND " + PostmenDbHelper.COLUMN_NUMBER + " = " + number, null, null, null, null);
+
+        if(cursor.getCount() <= 0)
         {
             ContentValues values = new ContentValues();
             values.put("street", street);
@@ -92,7 +94,7 @@ public class AdressDataSource {
                 PostmenDbHelper.COLUMN_STREET, null, null, null);
         cursor.moveToFirst();
 
-        if(cursor.getCount() == 0) return streetsList;
+        if (cursor.getCount() == 0) return streetsList;
 
         Log.d("AdressDataSource", "Cursorgroeße " + Integer.toString(cursor.getCount()));
         Log.d("AdressDataSource", "Columnsize of Cursor " + Integer.toString(cursor.getColumnCount()));
@@ -170,7 +172,7 @@ public class AdressDataSource {
         return adressList;
     }
 
-    private Adress cursorToAdress(Cursor cursor) {
+    public Adress cursorToAdress(Cursor cursor) {
         Adress adress = new Adress();
         adress.setId(cursor.getLong(0));
         adress.setStreet(cursor.getString(1));
