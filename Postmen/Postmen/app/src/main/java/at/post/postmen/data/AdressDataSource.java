@@ -62,6 +62,7 @@ public class AdressDataSource {
             cursor.moveToFirst();
             return cursorToAdress(cursor);
         }
+        cursor.moveToFirst();
         return cursorToAdress(cursor);
 
     }

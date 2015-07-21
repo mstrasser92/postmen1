@@ -21,7 +21,7 @@ public class PostmenDbHelper extends SQLiteOpenHelper{
 
     public static final String COLUMN_STREET = "street";
     public static final String COLUMN_NUMBER = "number";
-    public static final String  COLUMN_PARCELS = "parcels";
+    public static final String COLUMN_PARCELS = "parcels";
 
     public static final String SQL_CREATE_TABLE_ADRESSES =
             "create table " + TABLE_ADRESSES + "(" +
@@ -29,7 +29,7 @@ public class PostmenDbHelper extends SQLiteOpenHelper{
                     COLUMN_STREET + " text not null, " +
                     COLUMN_NUMBER + " text not null, " +
                     COLUMN_PARCELS + " integer, " +
-                    "UNIQUE(" + COLUMN_STREET + ", " + COLUMN_NUMBER + " ON CONFLICT REPLACE);";
+                    "UNIQUE(" + COLUMN_STREET + ", " + COLUMN_NUMBER + ") ON CONFLICT REPLACE);";
 
 
     // TABLE SIGNATURE RELEASE AUTHORISATIONS
@@ -41,7 +41,8 @@ public class PostmenDbHelper extends SQLiteOpenHelper{
             "create table " + TABLE_SIGRELAUT + "(" +
                     COLUMN_ID + " integer primary key autoincrement, " +
                     COLUMN_ADRESS_ID + " integer not null, " +
-                    COLUMN_NAME + " text not null);";
+                    COLUMN_NAME + " text not null, " +
+                    "UNIQUE(" + COLUMN_ADRESS_ID + ", " + COLUMN_NAME + ") ON CONFLICT REPLACE);";
 
     public PostmenDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
