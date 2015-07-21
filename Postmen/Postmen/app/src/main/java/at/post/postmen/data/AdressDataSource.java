@@ -4,8 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-import android.os.AsyncTask;
 import android.util.Log;
 
 import java.sql.SQLException;
@@ -48,17 +46,22 @@ public class AdressDataSource {
     }
 
     public Adress createAdress(String street, String number) {
-        ContentValues values = new ContentValues();
-        values.put("street", street);
-        values.put("number", number);
-        values.put("parcels", 0);
+        Cursor cursor = db.query("Adresses", allColumns, PostmenDbHelper.COLUMN_STREET + " = " + street + " AND " + PostmenDbHelper.COLUMN_NUMBER + " = " + number, null, null, null, null);
+        if(cursor.getCount() == 0)
+        {
+            ContentValues values = new ContentValues();
+            values.put("street", street);
+            values.put("number", number);
+            values.put("parcels", 0);
 
-        long insertId = db.insert("Adresses", null, values);
+            long insertId = db.insert("Adresses", null, values);
 
-        Cursor cursor = db.query("Adresses", allColumns, "id = " + insertId, null, null, null, null);
-        cursor.moveToFirst();
-
+            cursor = db.query("Adresses", allColumns, "id = " + insertId, null, null, null, null);
+            cursor.moveToFirst();
+            return cursorToAdress(cursor);
+        }
         return cursorToAdress(cursor);
+
     }
 
     public List<Adress> getAllAdresses() {
@@ -69,7 +72,7 @@ public class AdressDataSource {
 
         if(cursor.getCount() == 0) return AdressList;
 
-        while (cursor.isAfterLast() == false)
+        while (!cursor.isAfterLast())
         {
             Adress newAdress= cursorToAdress(cursor);
             AdressList.add(newAdress);
@@ -83,10 +86,10 @@ public class AdressDataSource {
     public List<String> getStreets() {
         List<String> streetsList = new ArrayList<String>();
         Cursor cursor = db.query(true,
-                dbHelper.TABLE_ADRESSES,
-                new String[] {dbHelper.COLUMN_STREET},
+                PostmenDbHelper.TABLE_ADRESSES,
+                new String[] {PostmenDbHelper.COLUMN_STREET},
                 null, null,
-                dbHelper.COLUMN_STREET, null, null, null);
+                PostmenDbHelper.COLUMN_STREET, null, null, null);
         cursor.moveToFirst();
 
         if(cursor.getCount() == 0) return streetsList;
@@ -94,7 +97,7 @@ public class AdressDataSource {
         Log.d("AdressDataSource", "Cursorgroeße " + Integer.toString(cursor.getCount()));
         Log.d("AdressDataSource", "Columnsize of Cursor " + Integer.toString(cursor.getColumnCount()));
 
-        while(cursor.isAfterLast() == false)
+        while(!cursor.isAfterLast())
         {
             String newStreet = cursor.getString(0);
             streetsList.add(newStreet);
@@ -107,15 +110,15 @@ public class AdressDataSource {
 
     public List<String> getNumbersOfStreet(String street) {
         List<String> numberList = new ArrayList<String>();
-        Cursor cursor = db.query(dbHelper.TABLE_ADRESSES,
-                new String[] {dbHelper.COLUMN_NUMBER},
-                dbHelper.COLUMN_STREET + "=?", new String[]{street},
-                null, null, dbHelper.COLUMN_NUMBER + " ASC");
+        Cursor cursor = db.query(PostmenDbHelper.TABLE_ADRESSES,
+                new String[] {PostmenDbHelper.COLUMN_NUMBER},
+                PostmenDbHelper.COLUMN_STREET + "=?", new String[]{street},
+                null, null, PostmenDbHelper.COLUMN_NUMBER + " ASC");
         cursor.moveToFirst();
 
         if(cursor.getCount() == 0) return numberList;
 
-        while(cursor.isAfterLast() == false)
+        while(!cursor.isAfterLast())
         {
             String newNumber = cursor.getString(0);
             numberList.add(newNumber);
@@ -130,8 +133,8 @@ public class AdressDataSource {
         Adress oneAdress = new Adress();
         try {
             this.open();
-            String selection = dbHelper.COLUMN_STREET + " = ? AND " + dbHelper.COLUMN_NUMBER + " = ?";
-            Cursor cursor = db.query(true, dbHelper.TABLE_ADRESSES, allColumns, selection, new String[] {street, number}, null, null, null, null);
+            String selection = PostmenDbHelper.COLUMN_STREET + " = ? AND " + PostmenDbHelper.COLUMN_NUMBER + " = ?";
+            Cursor cursor = db.query(true, PostmenDbHelper.TABLE_ADRESSES, allColumns, selection, new String[] {street, number}, null, null, null, null);
             cursor.moveToFirst();
             this.close();
             oneAdress = cursorToAdress(cursor);
@@ -145,14 +148,14 @@ public class AdressDataSource {
         List<Adress> adressList = new ArrayList<Adress>();
         try {
             this.open();
-            String selection = dbHelper.COLUMN_PARCELS + " > ? ";
-            Cursor cursor = db.query(true, dbHelper.TABLE_ADRESSES, allColumns, selection, new String[] {"0"}, null, null, null, null);
+            String selection = PostmenDbHelper.COLUMN_PARCELS + " > ? ";
+            Cursor cursor = db.query(true, PostmenDbHelper.TABLE_ADRESSES, allColumns, selection, new String[] {"0"}, null, null, null, null);
             cursor.moveToFirst();
             this.close();
 
             if(cursor.getCount() == 0) return adressList;
 
-            while (cursor.isAfterLast() == false)
+            while (!cursor.isAfterLast())
             {
                 Adress newAdress= cursorToAdress(cursor);
                 adressList.add(newAdress);
@@ -180,8 +183,8 @@ public class AdressDataSource {
         try {
             this.open();
             ContentValues values = new ContentValues();
-            values.put(dbHelper.COLUMN_PARCELS, 0);
-            db.update(dbHelper.TABLE_ADRESSES, values, null, null);
+            values.put(PostmenDbHelper.COLUMN_PARCELS, 0);
+            db.update(PostmenDbHelper.TABLE_ADRESSES, values, null, null);
             this.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -193,7 +196,7 @@ public class AdressDataSource {
         try {
             this.open();
             db.execSQL("DROP TABLE IF EXISTS ADRESSES");
-            db.execSQL(dbHelper.SQL_CREATE);
+            db.execSQL(PostmenDbHelper.SQL_CREATE_TABLE_ADRESSES);
             this.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -205,11 +208,11 @@ public class AdressDataSource {
         try {
             this.open();
             ContentValues values = new ContentValues();
-            values.put(dbHelper.COLUMN_PARCELS, adress.getParcels() + 1);
-            String selection = dbHelper.COLUMN_ID + " LIKE ?";
+            values.put(PostmenDbHelper.COLUMN_PARCELS, adress.getParcels() + 1);
+            String selection = PostmenDbHelper.COLUMN_ID + " LIKE ?";
             String[] selectionArgs = { Long.toString(adress.getId()) };
 
-            db.update(dbHelper.TABLE_ADRESSES, values, selection, selectionArgs);
+            db.update(PostmenDbHelper.TABLE_ADRESSES, values, selection, selectionArgs);
             this.close();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -221,14 +224,14 @@ public class AdressDataSource {
             this.open();
             ContentValues values = new ContentValues();
             if(toNull) {
-                values.put(dbHelper.COLUMN_PARCELS, 0);
+                values.put(PostmenDbHelper.COLUMN_PARCELS, 0);
             } else{
-                values.put(dbHelper.COLUMN_PARCELS, adress.getParcels() + 1);
+                values.put(PostmenDbHelper.COLUMN_PARCELS, adress.getParcels() + 1);
             }
-            String selection = dbHelper.COLUMN_ID + " LIKE ?";
+            String selection = PostmenDbHelper.COLUMN_ID + " LIKE ?";
             String[] selectionArgs = { Long.toString(adress.getId()) };
 
-            db.update(dbHelper.TABLE_ADRESSES, values, selection, selectionArgs );
+            db.update(PostmenDbHelper.TABLE_ADRESSES, values, selection, selectionArgs );
             this.close();
         } catch (SQLException e) {
             e.printStackTrace();

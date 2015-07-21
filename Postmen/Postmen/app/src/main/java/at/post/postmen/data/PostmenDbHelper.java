@@ -9,20 +9,38 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class PostmenDbHelper extends SQLiteOpenHelper{
 
+    // DATABASE NAME
     public static final String DB_NAME = "postmen.db";
     public static final int DB_VERSION = 1;
-    public static final String TABLE_ADRESSES = "Adresses";
+
+    // COMMON COLUMNS
     public static final String COLUMN_ID = "id";
+
+    // TABLE ADRESSES
+    public static final String TABLE_ADRESSES = "Adresses";
+
     public static final String COLUMN_STREET = "street";
     public static final String COLUMN_NUMBER = "number";
     public static final String  COLUMN_PARCELS = "parcels";
 
-    public static final String SQL_CREATE =
+    public static final String SQL_CREATE_TABLE_ADRESSES =
             "create table " + TABLE_ADRESSES + "(" +
                     COLUMN_ID + " integer primary key autoincrement, " +
                     COLUMN_STREET + " text not null, " +
                     COLUMN_NUMBER + " text not null, " +
                     COLUMN_PARCELS + " integer);";
+
+
+    // TABLE SIGNATURE RELEASE AUTHORISATIONS
+    public static final String TABLE_SIGRELAUT = "SignatureReleaseAuthorisations";
+    public static final String COLUMN_ADRESS_ID = "adressId";
+    public static final String COLUMN_NAME = "name";
+
+    public static final String SQL_CREATE_TABLE_SIGRELAUT =
+            "create table " + TABLE_SIGRELAUT + "(" +
+                    COLUMN_ID + " integer primary key autoincrement, " +
+                    COLUMN_ADRESS_ID + " integer not null, " +
+                    COLUMN_NAME + " text not null);";
 
     public PostmenDbHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -30,7 +48,8 @@ public class PostmenDbHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE);
+        db.execSQL(SQL_CREATE_TABLE_ADRESSES);
+        db.execSQL(SQL_CREATE_TABLE_SIGRELAUT);
     }
 
     @Override

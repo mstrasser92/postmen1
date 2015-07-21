@@ -145,7 +145,7 @@ public class AddAdressActivity extends ActionBarActivity implements View.OnClick
         adressSource.createAdress("Franz-Grillparzer-Gasse", "12");
         adressSource.createAdress("Franz-Grillparzer-Gasse", "14");
         adressSource.createAdress("Südtirolerstraße", "58");
-        adressSource.createAdress("Europa-Straße", "61");
+        adressSource.createAdress("Südtirolerstraße", "61");
         adressSource.createAdress("Europa-Straße", "65");
         adressSource.createAdress("Europa-Straße", "63");
         adressSource.createAdress("Südtirolerstraße", "60");
