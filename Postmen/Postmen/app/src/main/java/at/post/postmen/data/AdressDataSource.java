@@ -200,6 +200,8 @@ public class AdressDataSource {
             this.open();
             db.execSQL("DROP TABLE IF EXISTS ADRESSES");
             db.execSQL(PostmenDbHelper.SQL_CREATE_TABLE_ADRESSES);
+            db.execSQL("DROP TABLE IF EXISTS " + dbHelper.TABLE_SIGRELAUT);
+            db.execSQL(PostmenDbHelper.SQL_CREATE_TABLE_SIGRELAUT);
             this.close();
         } catch (SQLException e) {
             e.printStackTrace();
