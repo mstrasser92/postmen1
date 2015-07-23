@@ -16,6 +16,7 @@ import java.util.List;
 import at.post.postmen.R;
 import at.post.postmen.data.Adress;
 import at.post.postmen.data.AdressDataSource;
+import at.post.postmen.view.AdressAdapter;
 
 public class TourActivity extends ActionBarActivity {
 
@@ -40,7 +41,8 @@ public class TourActivity extends ActionBarActivity {
 
 
         remainingParcelsLv = (ListView)findViewById(R.id.remainingParcelsLv);
-        final ArrayAdapter<Adress> remainingParcelsListAdapter = new ArrayAdapter<Adress>(TourActivity.this, android.R.layout.simple_list_item_1, remainingParcelsList);
+        //final ArrayAdapter<Adress> remainingParcelsListAdapter2 = new ArrayAdapter<Adress>(TourActivity.this, android.R.layout.simple_list_item_1, remainingParcelsList);
+        final AdressAdapter remainingParcelsListAdapter = new AdressAdapter(TourActivity.this, null, remainingParcelsList);
         remainingParcelsLv.setAdapter(remainingParcelsListAdapter);
 
         remainingParcelsLv.setOnItemClickListener(new AdapterView.OnItemClickListener() {

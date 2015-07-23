@@ -10,24 +10,28 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import at.post.postmen.R;
 import at.post.postmen.data.Adress;
+import at.post.postmen.data.SigRelAutDataSource;
+import at.post.postmen.data.SignatureReleaseAuthorisation;
 
 /**
  * Created by Michael on 22.07.2015.
  */
 public class AdressAdapter extends BaseAdapter {
     private Activity mActivity;
-    private ArrayList mData = new ArrayList();
+    private List<Adress> mData = new ArrayList();
     private LayoutInflater mInflater;
     public Resources mRes;
 
     Adress tempVal = null;
     int i = 0;
 
-    public AdressAdapter(Activity activity, Resources resLocal, ArrayList data){
+    public AdressAdapter(Activity activity, Resources resLocal, List<Adress> data){
         mActivity = activity;
         mData = data;
         mRes = resLocal;
@@ -35,6 +39,9 @@ public class AdressAdapter extends BaseAdapter {
         mInflater = (LayoutInflater)mActivity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    public void remove(Adress toRemove) {
+        mData.remove(toRemove);
+    }
 
     @Override
     public int getCount() {
@@ -44,8 +51,8 @@ public class AdressAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
-        return position;
+    public Adress getItem(int position) {
+        return mData.get(position);
     }
 
     @Override
@@ -66,7 +73,7 @@ public class AdressAdapter extends BaseAdapter {
 
         if(convertView == null){
 
-            view = mInflater.inflate(R.layout.adressItem, null);
+            view = mInflater.inflate(R.layout.adress_item, null);
 
             holder = new ViewHolder();
             holder.adress = (TextView)view.findViewById(R.id.adress);
@@ -80,20 +87,52 @@ public class AdressAdapter extends BaseAdapter {
 
         if(mData.size() <= 0){
             holder.adress.setText("No Data");
+            holder.parcelCount.setVisibility(View.INVISIBLE);
+            holder.sigRelAuts.setVisibility(View.INVISIBLE);
         } else {
             tempVal = null;
             tempVal = (Adress) mData.get( position);
 
             holder.adress.setText(tempVal.getStreet() + " " + tempVal.getNumber());
-            holder.parcelCount.setText(tempVal.getParcels());
+            holder.parcelCount.setText(String.valueOf(tempVal.getParcels()));
             String sigRelAuts = null;
-            sigRelAuts = getSigRelAuts();
+            sigRelAuts = getSigRelAuts(tempVal);
             holder.sigRelAuts.setText(sigRelAuts);
         }
-        return null;
+        return view;
     }
 
-    private String getSigRelAuts(){
-        return  null;
+    private String getSigRelAuts(Adress adress){
+        String sigRelAuts = "Abstellgenehmigungen: \n";
+        List<SignatureReleaseAuthorisation> sigRelList = new ArrayList<>();
+
+        SigRelAutDataSource sigRelSource = new SigRelAutDataSource(mActivity.getApplicationContext());
+
+        try {
+            sigRelSource.open();
+            sigRelList = sigRelSource.getAllSigRelAutOfAdress(adress);
+            sigRelSource.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if(sigRelList.size() == 1)
+            sigRelAuts = "Abstellgenehmigung: ";
+
+        if(sigRelList.size() <= 0 || sigRelList == null)
+        {
+            sigRelAuts = "";
+        } else {
+            int i = 0;
+            while(i < sigRelList.size())
+            {
+                sigRelAuts += sigRelList.get(i).getName();
+                i++;
+                if(i < sigRelList.size())
+                    sigRelAuts += "; ";
+
+            }
+        }
+        return  sigRelAuts;
     }
 }

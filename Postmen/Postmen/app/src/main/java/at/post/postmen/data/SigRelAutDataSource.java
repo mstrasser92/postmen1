@@ -72,7 +72,9 @@ public class SigRelAutDataSource {
     public SignatureReleaseAuthorisation cursorToSigRelAut(Cursor cursor){
         SignatureReleaseAuthorisation sigRelAut = new SignatureReleaseAuthorisation();
         sigRelAut.setId(cursor.getLong(0));
-        Adress adress = cursorToAdress(db.query(true, PostmenDbHelper.TABLE_ADRESSES, allColumns, dbHelper.COLUMN_ID + " = ? ", new String[]{String.valueOf(cursor.getLong(1))}, null, null, null, null));
+        Cursor adress_cursor = db.query(true, PostmenDbHelper.TABLE_ADRESSES,  new String[]{dbHelper.COLUMN_ID, dbHelper.COLUMN_STREET, dbHelper.COLUMN_NUMBER,dbHelper.COLUMN_PARCELS}, dbHelper.COLUMN_ID + " = ? ", new String[]{String.valueOf(cursor.getLong(1))}, null, null, null, null);
+        adress_cursor.moveToFirst();
+        Adress adress = cursorToAdress(adress_cursor);
         sigRelAut.setAdress(adress);
         sigRelAut.setName(cursor.getString(2));
         return sigRelAut;
@@ -105,6 +107,6 @@ public class SigRelAutDataSource {
             cursor.moveToNext();
         }
         cursor.close();
-        return null;
+        return sigRelAutList;
     }
 }

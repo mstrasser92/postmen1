@@ -300,6 +300,7 @@ public class AddAdressActivity extends ActionBarActivity implements View.OnClick
             sigRelAutDataSource.open();
             sigRelAutDataSource.createSigRelAut("Murhof", "10", "Steiner");
             sigRelAutDataSource.createSigRelAut("Südtirolerplatz", "3", "Felfer");
+            sigRelAutDataSource.createSigRelAut("Südtirolerplatz", "3", "Oberrainer");
             sigRelAutDataSource.close();
         } catch (SQLException e) {
             e.printStackTrace();
