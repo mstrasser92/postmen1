@@ -33,47 +33,62 @@ public class AdressDataSource {
 
     public Adress createAdress(String street, String number, int parcels) {
         ContentValues values = new ContentValues();
-        values.put("street", street);
-        values.put("number", number);
-        values.put("parcels", parcels);
+        values.put(dbHelper.COLUMN_STREET, street);
+        values.put(dbHelper.COLUMN_NUMBER, number);
+        values.put(dbHelper.COLUMN_PARCELS, parcels);
 
-        long insertId = db.insert("Adresses", null, values);
+        long insertId = db.insert(dbHelper.TABLE_ADRESSES, null, values);
 
-        Cursor cursor = db.query("Adresses", allColumns, "id = " + insertId, null, null, null, null);
+        Cursor cursor = db.query(dbHelper.TABLE_ADRESSES, allColumns, dbHelper.COLUMN_ID + " = " + insertId, null, null, null, null);
         cursor.moveToFirst();
 
         return cursorToAdress(cursor);
     }
 
     public Adress createAdress(String street, String number) {
-        Cursor cursor = db.rawQuery("SELECT id, street, number, parcels FROM Adresses WHERE street = ? AND number = ?", new String[]{street, number});
+        Cursor cursor = db.rawQuery("SELECT " + PostmenDbHelper.COLUMN_ID +", " +
+                PostmenDbHelper.COLUMN_STREET + ", " +
+                PostmenDbHelper.COLUMN_NUMBER + ", " +
+                PostmenDbHelper.COLUMN_PARCELS + " " +
+                " FROM " + PostmenDbHelper.TABLE_ADRESSES +
+                " WHERE " + PostmenDbHelper.COLUMN_STREET + " = ? AND " +
+                PostmenDbHelper.COLUMN_NUMBER + " = ?", new String[]{street, number});
                 //db.query("Adresses", allColumns, PostmenDbHelper.COLUMN_STREET + " = " + street + " AND " + PostmenDbHelper.COLUMN_NUMBER + " = " + number, null, null, null, null);
 
         if(cursor.getCount() <= 0)
         {
             ContentValues values = new ContentValues();
-            values.put("street", street);
-            values.put("number", number);
-            values.put("parcels", 0);
+            values.put(PostmenDbHelper.COLUMN_STREET, street);
+            values.put(PostmenDbHelper.COLUMN_NUMBER, number);
+            values.put(PostmenDbHelper.COLUMN_PARCELS, 0);
 
-            long insertId = db.insert("Adresses", null, values);
+            long insertId = db.insert(PostmenDbHelper.TABLE_ADRESSES, null, values);
 
-            cursor = db.query("Adresses", allColumns, "id = " + insertId, null, null, null, null);
+            cursor = db.query(PostmenDbHelper.TABLE_ADRESSES, allColumns, PostmenDbHelper.COLUMN_ID + " = " + insertId, null, null, null, null);
             cursor.moveToFirst();
-            return cursorToAdress(cursor);
+
+            Adress adress = cursorToAdress(cursor);
+            cursor.close();
+            return adress;
         }
         cursor.moveToFirst();
-        return cursorToAdress(cursor);
+        Adress adress = cursorToAdress(cursor);
+        cursor.close();
+        return adress;
 
     }
 
     public List<Adress> getAllAdresses() {
         List<Adress> AdressList = new ArrayList<Adress>();
 
-        Cursor cursor = db.query("Adresses", allColumns, null, null, null, null,null);
+        Cursor cursor = db.query(PostmenDbHelper.TABLE_ADRESSES, allColumns, null, null, null, null,null);
         cursor.moveToFirst();
 
-        if(cursor.getCount() == 0) return AdressList;
+        if(cursor.getCount() == 0)
+        {
+            cursor.close();
+            return AdressList;
+        }
 
         while (!cursor.isAfterLast())
         {
@@ -95,7 +110,10 @@ public class AdressDataSource {
                 PostmenDbHelper.COLUMN_STREET, null, null, null);
         cursor.moveToFirst();
 
-        if (cursor.getCount() == 0) return streetsList;
+        if (cursor.getCount() == 0){
+            cursor.close();
+            return streetsList;
+        }
 
         Log.d("AdressDataSource", "Cursorgroeße " + Integer.toString(cursor.getCount()));
         Log.d("AdressDataSource", "Columnsize of Cursor " + Integer.toString(cursor.getColumnCount()));
@@ -119,7 +137,10 @@ public class AdressDataSource {
                 null, null, PostmenDbHelper.COLUMN_NUMBER + " ASC");
         cursor.moveToFirst();
 
-        if(cursor.getCount() == 0) return numberList;
+        if(cursor.getCount() == 0){
+            cursor.close();
+            return numberList;
+        }
 
         while(!cursor.isAfterLast())
         {
@@ -141,6 +162,7 @@ public class AdressDataSource {
             cursor.moveToFirst();
             this.close();
             oneAdress = cursorToAdress(cursor);
+            cursor.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -156,7 +178,10 @@ public class AdressDataSource {
             cursor.moveToFirst();
             this.close();
 
-            if(cursor.getCount() == 0) return adressList;
+            if(cursor.getCount() == 0){
+                cursor.close();
+                return adressList;
+            }
 
             while (!cursor.isAfterLast())
             {
@@ -198,7 +223,7 @@ public class AdressDataSource {
     public void resetDb() {
         try {
             this.open();
-            db.execSQL("DROP TABLE IF EXISTS ADRESSES");
+            db.execSQL("DROP TABLE IF EXISTS " + PostmenDbHelper.TABLE_ADRESSES);
             db.execSQL(PostmenDbHelper.SQL_CREATE_TABLE_ADRESSES);
             db.execSQL("DROP TABLE IF EXISTS " + dbHelper.TABLE_SIGRELAUT);
             db.execSQL(PostmenDbHelper.SQL_CREATE_TABLE_SIGRELAUT);

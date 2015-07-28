@@ -19,4 +19,10 @@
     <string name="title_activity_add_parcels">Pakete hinzufügen</string>
     <string name="go_on_tour">Starte Tour</string>
     <string name="title_activity_tour">OnTour</string>
+    <string name="are_you_sure">Sind Sie sicher?</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="sigRelAut">Abstellgenehmigung</string>
+    <string name="sigRelAuts">Abstellgenehmigungen</string>
+    <string name="no_data">Keine Daten vorhanden</string>
 </resources>

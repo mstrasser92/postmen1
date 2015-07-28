@@ -108,8 +108,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                 };
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener)
-                        .setNegativeButton("No", dialogClickListener).show();
+                builder.setMessage(R.string.are_you_sure).setPositiveButton(R.string.yes, dialogClickListener)
+                        .setNegativeButton(R.string.no, dialogClickListener).show();
                 break;
             case R.id.resetDbBtn:
                 DialogInterface.OnClickListener dialogClickListener2 = new DialogInterface.OnClickListener() {
@@ -129,8 +129,8 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
                 };
                 AlertDialog.Builder builder2 = new AlertDialog.Builder(this);
-                builder2.setMessage("Are you sure?").setPositiveButton("Yes", dialogClickListener2)
-                        .setNegativeButton("No", dialogClickListener2).show();
+                builder2.setMessage(R.string.are_you_sure).setPositiveButton(R.string.yes, dialogClickListener2)
+                        .setNegativeButton(R.string.no, dialogClickListener2).show();
 
                 break;
             case R.id.addParcelsBtn:

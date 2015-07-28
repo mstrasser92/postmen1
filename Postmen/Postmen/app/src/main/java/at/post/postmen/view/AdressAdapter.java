@@ -86,7 +86,7 @@ public class AdressAdapter extends BaseAdapter {
         }
 
         if(mData.size() <= 0){
-            holder.adress.setText("No Data");
+            holder.adress.setText(R.string.no_data);
             holder.parcelCount.setVisibility(View.INVISIBLE);
             holder.sigRelAuts.setVisibility(View.INVISIBLE);
         } else {
@@ -103,7 +103,7 @@ public class AdressAdapter extends BaseAdapter {
     }
 
     private String getSigRelAuts(Adress adress){
-        String sigRelAuts = "Abstellgenehmigungen: \n";
+        String sigRelAuts = mActivity.getString(R.string.sigRelAuts) + ": \n";
         List<SignatureReleaseAuthorisation> sigRelList = new ArrayList<>();
 
         SigRelAutDataSource sigRelSource = new SigRelAutDataSource(mActivity.getApplicationContext());
@@ -117,7 +117,7 @@ public class AdressAdapter extends BaseAdapter {
         }
 
         if(sigRelList.size() == 1)
-            sigRelAuts = "Abstellgenehmigung: ";
+            sigRelAuts = mActivity.getString(R.string.sigRelAut) + ": ";
 
         if(sigRelList.size() <= 0 || sigRelList == null)
         {

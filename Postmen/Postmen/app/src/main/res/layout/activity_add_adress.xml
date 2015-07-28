@@ -70,4 +70,13 @@
         android:layout_marginBottom="67dp"
         android:textSize="40px" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lade Land 12"
+        android:id="@+id/loadLand12Btn"
+        android:textSize="40px"
+        android:layout_above="@+id/loadOrt7Btn"
+        android:layout_centerHorizontal="true" />
+
 </RelativeLayout>

@@ -54,7 +54,13 @@ public class SigRelAutDataSource {
                 new String[]{street, number},
                 null, null, null, null);
         cursor.moveToFirst();
+        if(cursor.getCount() <= 0){
+            cursor.close();
+            return null;
+        }
+
         Adress adress = cursorToAdress(cursor);
+        cursor.close();
 
         SignatureReleaseAuthorisation sigRelAut = new SignatureReleaseAuthorisation();
         sigRelAut.setAdress(adress);
@@ -66,7 +72,7 @@ public class SigRelAutDataSource {
         long insertId = db.insert(PostmenDbHelper.TABLE_SIGRELAUT, null, values);
 
         sigRelAut.setId(insertId);
-        return null;
+        return sigRelAut;
     }
 
     public SignatureReleaseAuthorisation cursorToSigRelAut(Cursor cursor){
@@ -75,6 +81,7 @@ public class SigRelAutDataSource {
         Cursor adress_cursor = db.query(true, PostmenDbHelper.TABLE_ADRESSES,  new String[]{dbHelper.COLUMN_ID, dbHelper.COLUMN_STREET, dbHelper.COLUMN_NUMBER,dbHelper.COLUMN_PARCELS}, dbHelper.COLUMN_ID + " = ? ", new String[]{String.valueOf(cursor.getLong(1))}, null, null, null, null);
         adress_cursor.moveToFirst();
         Adress adress = cursorToAdress(adress_cursor);
+        adress_cursor.close();
         sigRelAut.setAdress(adress);
         sigRelAut.setName(cursor.getString(2));
         return sigRelAut;
@@ -99,7 +106,10 @@ public class SigRelAutDataSource {
                 null, null, null, null);
         cursor.moveToFirst();
 
-        if (cursor.getCount() == 0) return sigRelAutList;
+        if (cursor.getCount() == 0){
+            cursor.close();
+            return sigRelAutList;
+        }
 
         while(!cursor.isAfterLast())
         {
