@@ -24,6 +24,7 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
     private Button resetParcelsBtn;
     private Button resetDbBtn;
     private Button addParcelsBtn;
+    private Button addMoneyBtn;
     private Button goOnTourBtn;
 
     @Override
@@ -47,6 +48,9 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
 
         addParcelsBtn = (Button)findViewById(R.id.addParcelsBtn);
         addParcelsBtn.setOnClickListener(this);
+
+        addMoneyBtn = (Button)findViewById(R.id.addMoneyBtn);
+        addMoneyBtn.setOnClickListener(this);
 
         goOnTourBtn = (Button)findViewById(R.id.goOnTourBtn);
         goOnTourBtn.setOnClickListener(this);
@@ -135,7 +139,13 @@ public class MainActivity extends ActionBarActivity implements View.OnClickListe
                 break;
             case R.id.addParcelsBtn:
                 Intent intent3 = new Intent(this, AddParcelsActivity.class);
+                intent3.putExtra("Money", false);
                 startActivity(intent3);
+                break;
+            case R.id.addMoneyBtn:
+                Intent intent5 = new Intent(this, AddParcelsActivity.class);
+                intent5.putExtra("Money", true);
+                startActivity(intent5);
                 break;
             case R.id.goOnTourBtn:
                 Intent intent4 = new Intent(this, TourActivity.class);

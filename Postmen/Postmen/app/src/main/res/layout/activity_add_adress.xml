@@ -67,7 +67,7 @@
         android:id="@+id/loadOrt7Btn"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="67dp"
+        android:layout_marginBottom="40dp"
         android:textSize="40px" />
 
     <Button
@@ -77,6 +77,15 @@
         android:id="@+id/loadLand12Btn"
         android:textSize="40px"
         android:layout_above="@+id/loadOrt7Btn"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lade Land 15"
+        android:id="@+id/loadLand15Btn"
+        android:textSize="40px"
+        android:layout_above="@+id/loadLand12Btn"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -17,7 +17,7 @@ public class AdressDataSource {
 
     private SQLiteDatabase db;
     private PostmenDbHelper dbHelper;
-    private String[] allColumns = {dbHelper.COLUMN_ID, dbHelper.COLUMN_STREET, dbHelper.COLUMN_NUMBER, dbHelper.COLUMN_PARCELS};
+    private String[] allColumns = {dbHelper.COLUMN_ID, dbHelper.COLUMN_STREET, dbHelper.COLUMN_NUMBER, dbHelper.COLUMN_PARCELS, dbHelper.COLUMN_MONEY};
 
     public AdressDataSource(Context context) {
         dbHelper = new PostmenDbHelper(context);
@@ -36,6 +36,7 @@ public class AdressDataSource {
         values.put(dbHelper.COLUMN_STREET, street);
         values.put(dbHelper.COLUMN_NUMBER, number);
         values.put(dbHelper.COLUMN_PARCELS, parcels);
+        values.put(dbHelper.COLUMN_MONEY, 0);
 
         long insertId = db.insert(dbHelper.TABLE_ADRESSES, null, values);
 
@@ -49,7 +50,8 @@ public class AdressDataSource {
         Cursor cursor = db.rawQuery("SELECT " + PostmenDbHelper.COLUMN_ID +", " +
                 PostmenDbHelper.COLUMN_STREET + ", " +
                 PostmenDbHelper.COLUMN_NUMBER + ", " +
-                PostmenDbHelper.COLUMN_PARCELS + " " +
+                PostmenDbHelper.COLUMN_PARCELS + ", " +
+                PostmenDbHelper.COLUMN_MONEY + " " +
                 " FROM " + PostmenDbHelper.TABLE_ADRESSES +
                 " WHERE " + PostmenDbHelper.COLUMN_STREET + " = ? AND " +
                 PostmenDbHelper.COLUMN_NUMBER + " = ?", new String[]{street, number});
@@ -61,6 +63,7 @@ public class AdressDataSource {
             values.put(PostmenDbHelper.COLUMN_STREET, street);
             values.put(PostmenDbHelper.COLUMN_NUMBER, number);
             values.put(PostmenDbHelper.COLUMN_PARCELS, 0);
+            values.put(PostmenDbHelper.COLUMN_MONEY, 0);
 
             long insertId = db.insert(PostmenDbHelper.TABLE_ADRESSES, null, values);
 
@@ -173,8 +176,8 @@ public class AdressDataSource {
         List<Adress> adressList = new ArrayList<Adress>();
         try {
             this.open();
-            String selection = PostmenDbHelper.COLUMN_PARCELS + " > ? ";
-            Cursor cursor = db.query(true, PostmenDbHelper.TABLE_ADRESSES, allColumns, selection, new String[] {"0"}, null, null, null, null);
+            String selection = PostmenDbHelper.COLUMN_PARCELS + " > ? OR " + PostmenDbHelper.COLUMN_MONEY + " > ? ";
+            Cursor cursor = db.query(true, PostmenDbHelper.TABLE_ADRESSES, allColumns, selection, new String[] {"0", "0"}, null, null, null, null);
             cursor.moveToFirst();
             this.close();
 
@@ -204,6 +207,7 @@ public class AdressDataSource {
         adress.setStreet(cursor.getString(1));
         adress.setNumber(cursor.getString(2));
         adress.setParcels(cursor.getInt(3));
+        adress.setMoney(cursor.getInt(4));
         return adress;
     }
 
@@ -212,6 +216,7 @@ public class AdressDataSource {
             this.open();
             ContentValues values = new ContentValues();
             values.put(PostmenDbHelper.COLUMN_PARCELS, 0);
+            values.put(PostmenDbHelper.COLUMN_MONEY, 0);
             db.update(PostmenDbHelper.TABLE_ADRESSES, values, null, null);
             this.close();
         } catch (SQLException e) {
@@ -257,6 +262,40 @@ public class AdressDataSource {
                 values.put(PostmenDbHelper.COLUMN_PARCELS, 0);
             } else{
                 values.put(PostmenDbHelper.COLUMN_PARCELS, adress.getParcels() + 1);
+            }
+            String selection = PostmenDbHelper.COLUMN_ID + " LIKE ?";
+            String[] selectionArgs = { Long.toString(adress.getId()) };
+
+            db.update(PostmenDbHelper.TABLE_ADRESSES, values, selection, selectionArgs);
+            this.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateMoneyNumber(Adress adress ) {
+        try {
+            this.open();
+            ContentValues values = new ContentValues();
+            values.put(PostmenDbHelper.COLUMN_MONEY, adress.getMoney() + 1);
+            String selection = PostmenDbHelper.COLUMN_ID + " LIKE ?";
+            String[] selectionArgs = { Long.toString(adress.getId()) };
+
+            db.update(PostmenDbHelper.TABLE_ADRESSES, values, selection, selectionArgs);
+            this.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateMoneyNumber(Adress adress, Boolean toNull ) {
+        try {
+            this.open();
+            ContentValues values = new ContentValues();
+            if(toNull) {
+                values.put(PostmenDbHelper.COLUMN_MONEY, 0);
+            } else{
+                values.put(PostmenDbHelper.COLUMN_MONEY, adress.getMoney() + 1);
             }
             String selection = PostmenDbHelper.COLUMN_ID + " LIKE ?";
             String[] selectionArgs = { Long.toString(adress.getId()) };

@@ -49,8 +49,18 @@ public class TourActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Adress item = remainingParcelsListAdapter.getItem(position);
-                adressSource.updateParcelNumber(item, true);
-                remainingParcelsListAdapter.remove(item);
+
+                if(item.getParcels() > 0){
+                    adressSource.updateParcelNumber(item, true);
+                    item.setParcels(0);
+                } else {
+                    adressSource.updateMoneyNumber(item, true);
+                    item.setMoney(0);
+                }
+
+                if(item.getMoney() == 0)
+                    remainingParcelsListAdapter.remove(item);
+
                 remainingParcelsListAdapter.notifyDataSetChanged();
             }
         });

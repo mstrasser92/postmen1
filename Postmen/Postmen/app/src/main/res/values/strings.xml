@@ -16,6 +16,7 @@
     <string name="reset_db">Datenbank zurücksetzen</string>
     <string name="reset_db_done">Datenbank zurückgesetzt</string>
     <string name="addParcels">Pakete hinzufügen</string>
+    <string name="addMoney">Geld hinzufügen</string>
     <string name="title_activity_add_parcels">Pakete hinzufügen</string>
     <string name="go_on_tour">Starte Tour</string>
     <string name="title_activity_tour">OnTour</string>

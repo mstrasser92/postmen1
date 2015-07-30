@@ -8,6 +8,7 @@ public class Adress {
     private  String street;
     private String number;
     private int parcels;
+    private int money;
 
     public long getId() {
         return id;
@@ -39,6 +40,14 @@ public class Adress {
 
     public void setParcels(int parcels) {
         this.parcels = parcels;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package at.post.postmen.app;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -33,10 +34,15 @@ public class AddParcelsActivity extends ActionBarActivity {
     private ListView numbersOfStreetLv;
     private TextView streetTv;
 
+    private boolean money;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_parcels);
+
+        Intent i = getIntent();
+        money = i.getBooleanExtra("Money", false);
 
         numberList = new ArrayList<String>();
 
@@ -82,10 +88,15 @@ public class AddParcelsActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String item = (String) numbersOfStreetLv.getAdapter().getItem(position);
                 Adress adress = adressSource.getOneAdress(selectedStreet, item);
-                adressSource.updateParcelNumber(adress);
+                if(money){
+                    adressSource.updateMoneyNumber(adress);
+                    Toast.makeText(AddParcelsActivity.this, "Einen Geldauftrag bei " + selectedStreet + " " + item + " hinzugefügt!", Toast.LENGTH_LONG).show();
+                } else {
+                    adressSource.updateParcelNumber(adress);
+                    Toast.makeText(AddParcelsActivity.this, "Ein Paket bei " + selectedStreet + " " + item + " hinzugefügt!", Toast.LENGTH_LONG).show();
+                }
                 streetLv.setVisibility(View.VISIBLE);
                 numbersOfStreetLv.setVisibility(View.INVISIBLE);
-                Toast.makeText(AddParcelsActivity.this, "Ein Paket bei " + selectedStreet + " " + item + " hinzugefügt!", Toast.LENGTH_LONG).show();
                 streetTv.setVisibility(View.INVISIBLE);
             }
         });

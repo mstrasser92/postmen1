@@ -22,6 +22,7 @@ public class PostmenDbHelper extends SQLiteOpenHelper{
     public static final String COLUMN_STREET = "street";
     public static final String COLUMN_NUMBER = "number";
     public static final String COLUMN_PARCELS = "parcels";
+    public static final String COLUMN_MONEY = "money";
 
     public static final String SQL_CREATE_TABLE_ADRESSES =
             "create table " + TABLE_ADRESSES + "(" +
@@ -29,6 +30,7 @@ public class PostmenDbHelper extends SQLiteOpenHelper{
                     COLUMN_STREET + " text not null, " +
                     COLUMN_NUMBER + " text not null, " +
                     COLUMN_PARCELS + " integer, " +
+                    COLUMN_MONEY + " integer, " +
                     "UNIQUE(" + COLUMN_STREET + ", " + COLUMN_NUMBER + ") ON CONFLICT REPLACE);";
 
 

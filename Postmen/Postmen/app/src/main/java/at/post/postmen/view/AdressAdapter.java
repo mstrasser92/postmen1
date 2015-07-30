@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TableLayout;
 import android.widget.TextView;
 
 import java.sql.SQLException;
@@ -61,6 +62,7 @@ public class AdressAdapter extends BaseAdapter {
     }
 
     public static class ViewHolder{
+        public TableLayout layout;
         public TextView adress;
         public TextView parcelCount;
         public TextView sigRelAuts;
@@ -76,6 +78,7 @@ public class AdressAdapter extends BaseAdapter {
             view = mInflater.inflate(R.layout.adress_item, null);
 
             holder = new ViewHolder();
+            holder.layout = (TableLayout)view.findViewById(R.id.adress_item);
             holder.adress = (TextView)view.findViewById(R.id.adress);
             holder.parcelCount = (TextView) view.findViewById(R.id.parcelCount);
             holder.sigRelAuts = (TextView) view.findViewById(R.id.sigRelAuts);
@@ -86,6 +89,7 @@ public class AdressAdapter extends BaseAdapter {
         }
 
         if(mData.size() <= 0){
+            holder.layout.setBackgroundColor(mActivity.getResources().getColor(R.color.background_material_light));
             holder.adress.setText(R.string.no_data);
             holder.parcelCount.setVisibility(View.INVISIBLE);
             holder.sigRelAuts.setVisibility(View.INVISIBLE);
@@ -93,8 +97,18 @@ public class AdressAdapter extends BaseAdapter {
             tempVal = null;
             tempVal = (Adress) mData.get( position);
 
+            holder.layout.setBackgroundColor(mActivity.getResources().getColor(R.color.background_material_light));
             holder.adress.setText(tempVal.getStreet() + " " + tempVal.getNumber());
             holder.parcelCount.setText(String.valueOf(tempVal.getParcels()));
+            if(tempVal.getMoney() > 0){
+                String parcelText = "";
+                if(tempVal.getParcels() > 0)
+                    parcelText = "Pakete: " + holder.parcelCount.getText() + "   ";
+                parcelText +=  "Geldaufträge: "+ String.valueOf(tempVal.getMoney());
+                holder.parcelCount.setText(parcelText);
+
+                holder.layout.setBackgroundColor(mActivity.getResources().getColor(R.color.red));
+            }
             String sigRelAuts = null;
             sigRelAuts = getSigRelAuts(tempVal);
             holder.sigRelAuts.setText(sigRelAuts);

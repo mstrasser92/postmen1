@@ -29,16 +29,16 @@
         android:layout_height="wrap_content"
         android:text="@string/reset_parcels"
         android:id="@+id/resetParcelsBtn"
-        android:layout_below="@+id/addParcelsBtn"
+        android:layout_below="@+id/addMoneyBtn"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="25dp" />
+        android:layout_marginTop="10dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/reset_db"
         android:id="@+id/resetDbBtn"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="10dp"
         android:layout_below="@+id/resetParcelsBtn"
         android:layout_centerHorizontal="true" />
 
@@ -46,9 +46,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/addParcelsBtn"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="10dp"
         android:text="@string/addParcels"
         android:layout_below="@+id/NewAdressBtn"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addMoneyBtn"
+        android:layout_marginTop="10dp"
+        android:text="@string/addMoney"
+        android:layout_below="@+id/addParcelsBtn"
         android:layout_centerHorizontal="true" />
 
     <Button
